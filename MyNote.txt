@@ -1,0 +1,119 @@
+    // method 1 
+    const handleSubmit = e => {
+        e.preventDefault();
+        console.log(e.target.name.value)
+    }
+
+
+
+
+
+
+  // method 2
+    const [name, setName] = useState(null);
+    const handleSubmit = e => {
+        e.preventDefault()
+        console.log(name);
+    }
+    const handleNameChange = e => {
+        setName(e.target.value);
+    }
+
+
+
+
+
+
+
+  // method 3
+    const [name, setName] = useState('default value');
+    const [error, setError] = useState('');
+    const handleSubmit = e => {
+        e.preventDefault()
+        if(name.length < 5){
+            setError('please enter more then 5 letter')
+        }else{
+            setError('')
+            console.log(name);
+        }
+    }
+    const handleNameChange = e => {
+        setName(e.target.value);
+    }
+
+    <form onSubmit={handleSubmit}>
+        <input className="border-2" onChange={handleNameChange} name="name" type="text" value={name} />
+        {error && <p>{error}</p>}
+    </form>
+
+
+
+
+
+
+
+  // method 4
+    const nameRef = useRef(null);
+    useEffect(() => {
+        nameRef.current.focus();
+    }, []);
+    const handleSubmit = e => {
+        e.preventDefault()
+        console.log(nameRef.current.value);
+    }
+    <form onSubmit={handleSubmit}>
+        <input className="border-2" ref={nameRef} name="name" type="text" />
+    </form>
+
+
+
+
+
+
+
+
+
+
+// method 5
+const ReusableForm = ({ formTitle, handleSubmit, submitBtnTxt = 'Submit', children }) => {
+    const handleLocalSubmit = e => {
+        e.preventDefault();
+        const data = {
+            name: e.target.name.value,
+        };
+        handleSubmit(data);
+    }
+    return (
+        <div>
+            <h1 className="text-2xl"> {formTitle} </h1>
+            <h2>{children}</h2>
+            <form onSubmit={handleLocalSubmit}>
+                <input className="border-2" name="name" type="text" />
+                <br />
+                <input className="border-2" type="submit" value={submitBtnTxt} />
+            </form>
+        </div>
+    );
+};
+
+ const handleSubmitProfile = data => {
+    console.log('Submit data', data)
+  }
+  const handleUpdateProfile = data => {
+    console.log('Update data', data)
+  }
+<ReusableForm formTitle={'Submit Form'} handleSubmit={handleSubmitProfile}>
+    <h1>this is Submit form</h1>
+</ReusableForm>
+<ReusableForm formTitle={'Profile update from'} submitBtnTxt={'Update'} handleSubmit={handleUpdateProfile}>
+    <h1>This is update from</h1>
+</ReusableForm>
+
+
+
+
+
+
+
+
+
